@@ -5,8 +5,11 @@ const { User } = require('../models');
 const resolvers = {
 
     Query: {
-        async me(_, { username }) {
-            return await User.findOne({username})
+        me: async (_, context) => {
+            if (context.user) {
+                return User.findOne({ _id: context.user._id})
+            }
+            throw new AuthenticationError('Log in!')
         }
     },
 
@@ -30,8 +33,9 @@ const resolvers = {
         },
 
         addUser: async (_, { username, email, password }) => {
-            const user = User.create({ username, email, password })
+            const user = await User.create({ username, email, password })
             const token = signToken(user);
+            console.log(user, token)
             return { token, user }
         },
 

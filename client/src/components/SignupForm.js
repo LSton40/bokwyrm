@@ -9,20 +9,20 @@ import { ADD_USER } from '../utils/mutations';
 
 const SignupForm = () => {
   // set initial form state
-
+  
   const [userFormData, setUserFormData] = useState({ username: '', email: '', password: '' });
-
+  
   // set state for form validation
   const [validated] = useState(false);
   // set state for alert
   const [showAlert, setShowAlert] = useState(false);
-
+  const [addUser, {error, data}] = useMutation(ADD_USER)
+  
   const handleInputChange = (event) => {
     const { name, value } = event.target;
     setUserFormData({ ...userFormData, [name]: value });
   };
-
-  const [addUser, {}] = useMutation(ADD_USER)
+  
 
   const handleFormSubmit = async (event) => {
     event.preventDefault();
@@ -34,16 +34,18 @@ const SignupForm = () => {
       event.stopPropagation();
     }
 
+    // console.log(userFormData)
     try {
-      const response = await addUser({variables: userFormData});
-
-      if (!response.ok) {
-        throw new Error('something went wrong!');
-      }
-
-      const { token, user } = await response.json();
-      console.log(user);
-      Auth.login(token);
+      const response = await addUser({variables: {...userFormData}});
+      
+      // if (!response.ok) {
+      //   throw new Error('something went wrong!');
+      // }
+      
+      // console.log(response)
+      // const { token, user } = await response.json();
+      // console.log(user);
+      // Auth.login(token);
     } catch (err) {
       console.error(err);
       setShowAlert(true);

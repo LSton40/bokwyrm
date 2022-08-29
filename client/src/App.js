@@ -1,10 +1,21 @@
 import React from 'react';
 import { BrowserRouter as Router, Switch, Route } from 'react-router-dom';
-import {ApolloClient, ApolloProvider, InMemoryCache, createHttpLink} from '@apollo/client';
+import {ApolloClient, ApolloProvider, InMemoryCache, createHttpLink, ApolloLink} from '@apollo/client';
+import {onError} from '@apollo/client/link/error';
 import { setContext } from '@apollo/client/link/context';
 import SearchBooks from './pages/SearchBooks';
 import SavedBooks from './pages/SavedBooks';
 import Navbar from './components/Navbar';
+
+const errorLink = onError(({ graphQLErrors, networkError }) => {
+  if (graphQLErrors)
+    graphQLErrors.forEach(({ message, locations, path }) =>
+      console.log(
+        `[GraphQL error]: Message: ${message}, Location: ${locations}, Path: ${path}`
+      )
+    );
+  if (networkError) console.log(`[Network error]: ${networkError}`);
+});
 
 
 const httpLink = createHttpLink({
@@ -22,7 +33,7 @@ const authLink = setContext((_, {headers}) => {
 });
 
 const client = new ApolloClient({
-  link: authLink.concat(httpLink),
+  link: ApolloLink.from([errorLink, authLink.concat(httpLink)]),
   cache: new InMemoryCache()
 })
 
