@@ -39,10 +39,11 @@ const resolvers = {
             return { token, user }
         },
 
-        saveBook: async (_, {userId, bookId, authors, description, title, image, link}, context) => {
-            if (context.user) {
+        saveBook: async (_, {bookId, authors, description, title, image, link}, context) => {
+            // if (context.user) {
+                console.log(context.user._id)
                 return await User.findOneAndUpdate(
-                    {_id: userId}, 
+                    {_id: context.user._id}, 
                     {
                         $addToSet: { savedBooks: {
                             bookId,
@@ -59,8 +60,8 @@ const resolvers = {
                         runValidators: true
                     }
                 );
-            }
-            throw new AuthenticationError('You have to be logged in to do that!')
+            // }
+            // throw new AuthenticationError('You have to be logged in to do that!')
         },
 
         removeBook: async (_, { userId, bookId }) => {
