@@ -15,10 +15,6 @@ const SavedBooks = () => {
 
   const userData = data?.me;
 
-  console.log(userData)
-  // const userData = data.me
-  // console.log(userData)
-  // console.log(data)
 
   // const userDataLength = Object.keys(userData).length;
 
@@ -51,7 +47,6 @@ const SavedBooks = () => {
   // }, [userDataLength]);
 
 
-  // console.log(data);
   const [removeBook] = useMutation(REMOVE_BOOK);
 
   // create function that accepts the book's mongo _id value as param and deletes the book from the database
