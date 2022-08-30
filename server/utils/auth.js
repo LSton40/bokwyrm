@@ -16,10 +16,8 @@ module.exports = {
 
     // ["Bearer", "<tokenvalue>"]
     if (token.includes('Bearer')) {
-    // if (req.headers.authorization) {
       token = token.split(' ').pop().trim();
     }
-
 
     // verify token and get user data out of it
     try {
@@ -30,10 +28,6 @@ module.exports = {
       console.log('Invalid token');
       return res.status(400).json({ message: 'invalid token!' });
     }
-
-    // send to next endpoint
-    // next();
-    // return req;
   },
   signToken: function ({ username, email, _id }) {
     const payload = { username, email, _id };

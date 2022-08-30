@@ -25,8 +25,6 @@ const SearchBooks = () => {
     return () => saveBookIds(savedBookIds);
   });
   
-
-
   // create method to search for books and set state on form submit
   const handleFormSubmit = async (event) => {
     event.preventDefault();
@@ -39,7 +37,7 @@ const SearchBooks = () => {
       const response = await searchGoogleBooks(searchInput);
       
 
-      if (!response.ok) {
+      if (!response) {
         throw new Error('something went wrong!');
       }
 
@@ -73,19 +71,18 @@ const SearchBooks = () => {
     }
 
     console.log(bookToSave)
-    // try {
+    try {
       const response = await saveBook({variables: {...bookToSave}});
-      // console.log(token)
-      console.log(response)
-      // if (!response.ok) {
-      //   throw new Error('something went wrong!');
-      // }
-
+ 
+      if (!response) {
+        throw new Error('something went wrong!');
+      }
+      
       // if book successfully saves to user's account, save book id to state
       setSavedBookIds([...savedBookIds, bookToSave.bookId]);
-    // } catch (err) {
-    //   console.error(err);
-    // }
+    } catch (err) {
+      console.error(err);
+    }
   };
 
   return (

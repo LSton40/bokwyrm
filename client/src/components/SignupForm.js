@@ -1,7 +1,5 @@
 import React, { useState } from 'react';
 import { Form, Button, Alert } from 'react-bootstrap';
-
-// import { createUser } from '../utils/API';
 import Auth from '../utils/auth';
 
 import { useMutation } from '@apollo/client';
@@ -23,7 +21,6 @@ const SignupForm = () => {
     setUserFormData({ ...userFormData, [name]: value });
   };
   
-
   const handleFormSubmit = async (event) => {
     event.preventDefault();
 
