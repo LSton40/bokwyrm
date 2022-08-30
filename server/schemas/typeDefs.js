@@ -1,23 +1,23 @@
 const { gql } = require('apollo-server-express');
 const { URLTypeDefinition } = require('graphql-scalars');
 
-const typeDefs = [URLTypeDefinition, gql`
+const typeDefs = [gql`
 
     type User {
         _id: ID!
         username: String!
         email: String!
         bookCount: Int!
-        savedBooks: [Book]!
+        savedBooks: [Book]
     }
 
     type Book {
-        _id: ID!
+        bookId: ID!
         authors: [String]
         description: String
         title: String!
         image: String
-        link: URL
+        link: String
     }
 
     type Auth {
@@ -31,7 +31,7 @@ const typeDefs = [URLTypeDefinition, gql`
         description: String
         title: String!
         image: String
-        link: URL
+        link: String
     }
 
     type Query  {
