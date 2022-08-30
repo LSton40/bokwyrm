@@ -5,12 +5,12 @@ const { User } = require('../models');
 const resolvers = {
 
     Query: {
-        me: async (_, context) => {
-            console.log(context.user)
-            if (context.user) {
-                return User.findOne({ _id: context.user._id})
-            }
-            throw new AuthenticationError('Log in!')
+        me: async (_, {}, context) => {
+            console.log(context)
+            // if (context.user) {
+                return await User.findOne({ _id: context.user._id})
+            // }
+            // throw new AuthenticationError('Log in!')
         }
     },
 
@@ -65,10 +65,10 @@ const resolvers = {
             // throw new AuthenticationError('You have to be logged in to do that!')
         },
 
-        removeBook: async (_, { userId, bookId }) => {
+        removeBook: async (_, { bookId }, context) => {
             return await User.findOneAndUpdate(
-                { _id: userId }, 
-                { $pull: { savedBooks: { _id: bookId } } }, 
+                { _id: context.user._id }, 
+                { $pull: { savedBooks: { bookId: bookId } } }, 
                 { new: true }
             )
         }
